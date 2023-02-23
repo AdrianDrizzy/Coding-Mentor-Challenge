@@ -1,0 +1,42 @@
+public static String sayNumber(long num) {
+    if (num == 0) {
+        return "Zero.";
+    }
+
+    // define word arrays
+    String[] ones = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    String[] tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    String[] suffixes = {"", "Thousand", "Million", "Billion", "Trillion"};
+
+    // initialize variables
+    int[] groups = new int[5];
+    int index = 0;
+    String prefix = "";
+    String suffix = "";
+
+    // split number into groups of three digits
+    while (num > 0) {
+        groups[index] = (int) (num % 1000);
+        num /= 1000;
+        index++;
+    }
+
+    // loop through groups and build string
+    String result = "";
+    for (int i = 4; i >= 0; i--) {
+        if (groups[i] != 0) {
+            prefix = ones[groups[i] / 100] + " Hundred ";
+            if (groups[i] % 100 < 20) {
+                prefix += ones[groups[i] % 100] + " ";
+            } else {
+                prefix += tens[(groups[i] % 100) / 10] + " ";
+                prefix += ones[groups[i] % 10] + " ";
+            }
+            suffix = suffixes[i] + ", ";
+            result += prefix + suffix;
+        }
+    }
+
+    return result.substring(0, result.length() - 2) + ".";
+}
+// This function works by splitting the input number into groups of three digits, and then building the string for each group using the ones, tens, and suffixes arrays. The resulting strings are concatenated together to form the final output string. Note that the function only works for numbers up to 999 trillion (i.e., 15 digits long).
